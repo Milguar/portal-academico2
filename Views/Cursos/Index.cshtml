@@ -1,0 +1,78 @@
+@model IEnumerable<portal_academico.Models.Curso>
+
+@{
+    ViewData["Title"] = "Catálogo de Cursos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Index" method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label for="searchNombre" class="form-label">Nombre del Curso</label>
+        <input type="text" name="searchNombre" class="form-control" value="@ViewData["searchNombre"]" placeholder="Buscar por nombre...">
+    </div>
+    <div class="col-md-2">
+        <label for="creditosMin" class="form-label">Créditos Mín.</label>
+        <input type="number" name="creditosMin" class="form-control" value="@ViewData["creditosMin"]" min="0">
+    </div>
+    <div class="col-md-2">
+        <label for="creditosMax" class="form-label">Créditos Máx.</label>
+        <input type="number" name="creditosMax" class="form-control" value="@ViewData["creditosMax"]" min="0">
+    </div>
+    <div class="col-md-2">
+        <label for="horarioInicio" class="form-label">Desde</label>
+        <input type="time" name="horarioInicio" class="form-control" value="@ViewData["horarioInicio"]">
+    </div>
+    <div class="col-md-2">
+        <label for="horarioFin" class="form-label">Hasta</label>
+        <input type="time" name="horarioFin" class="form-control" value="@ViewData["horarioFin"]">
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Limpiar Filtros</a>
+    </div>
+</form>
+
+<div class="row">
+    @if (!Model.Any())
+    {
+        <div class="col-12">
+            <div class="alert alert-warning">No se encontraron cursos disponibles.</div>
+        </div>
+    }
+    else
+    {
+        @foreach (var curso in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">@curso.Codigo</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">@curso.Nombre</h6>
+                        <p class="card-text">
+                            <strong>Créditos:</strong> @curso.Creditos<br>
+                            <strong>Cupo:</strong> @curso.CupoMaximo alumnos<br>
+                            <strong>Horario:</strong> @curso.HorarioInicio.ToString(@"hh\:mm") - @curso.HorarioFin.ToString(@"hh\:mm")<br>
+                            <strong>Estado:</strong> <span class="badge bg-success">@(curso.Activo ? "Activo" : "Inactivo")</span>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        @if (curso.Activo)
+                        {
+                            <form asp-controller="Matriculas" asp-action="Create" method="post">
+                                <input type="hidden" name="CursoId" value="@curso.Id" />
+                                <button type="submit" class="btn btn-success w-100">Inscribirse</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary w-100" disabled>No disponible</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

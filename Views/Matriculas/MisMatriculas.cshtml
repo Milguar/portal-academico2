@@ -1,0 +1,73 @@
+@model IEnumerable<portal_academico.Models.Matricula>
+
+@{
+    ViewData["Title"] = "Mis Matrículas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Curso</th>
+            <th>Código</th>
+            <th>Créditos</th>
+            <th>Horario</th>
+            <th>Fecha de Registro</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Curso?.Nombre</td>
+                <td>@item.Curso?.Codigo</td>
+                <td>@item.Curso?.Creditos</td>
+                <td>@item.Curso?.HorarioInicio.ToString(@"hh\:mm") - @item.Curso?.HorarioFin.ToString(@"hh\:mm")</td>
+                <td>@item.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @switch (item.Estado)
+                    {
+                        case EstadoMatricula.Pendiente:
+                            <span class="badge bg-warning">Pendiente</span>
+                            break;
+                        case EstadoMatricula.Confirmada:
+                            <span class="badge bg-success">Confirmada</span>
+                            break;
+                        case EstadoMatricula.Cancelada:
+                            <span class="badge bg-danger">Cancelada</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @if (item.Estado != EstadoMatricula.Cancelada)
+                    {
+                        <form asp-action="Cancel" asp-route-id="@item.Id" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Cancelar esta matrícula?')">Cancelar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No tienes matrículas registradas.</div>
+}
+
+<div class="mt-3">
+    <a asp-controller="Cursos" asp-action="Index" class="btn btn-primary">Ver Catálogo de Cursos</a>
+</div>
