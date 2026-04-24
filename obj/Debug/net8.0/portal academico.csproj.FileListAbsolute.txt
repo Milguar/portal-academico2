@@ -1,0 +1,10 @@
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.csproj.AssemblyReference.cache
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.GeneratedMSBuildEditorConfig.editorconfig
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.AssemblyInfoInputs.cache
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.AssemblyInfo.cs
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.csproj.CoreCompileInputs.cache
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.MvcApplicationPartsAssemblyInfo.cs
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.MvcApplicationPartsAssemblyInfo.cache
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.RazorAssemblyInfo.cache
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.RazorAssemblyInfo.cs
+D:\trabajos\portal academico\obj\Debug\net8.0\portal academico.sourcelink.json
