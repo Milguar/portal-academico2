@@ -1,0 +1,79 @@
+@model IEnumerable<portal_academico.Models.Matricula>
+
+@{
+    var curso = ViewData["Curso"] as portal_academico.Models.Curso;
+    ViewData["Title"] = $"Matrículas - {curso?.Nombre}";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Cursos" class="btn btn-secondary">Volver a Cursos</a>
+</p>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Estudiante</th>
+            <th>Email</th>
+            <th>Fecha de Registro</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Usuario?.UserName</td>
+                <td>@item.Usuario?.Email</td>
+                <td>@item.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @switch (item.Estado)
+                    {
+                        case EstadoMatricula.Pendiente:
+                            <span class="badge bg-warning">Pendiente</span>
+                            break;
+                        case EstadoMatricula.Confirmada:
+                            <span class="badge bg-success">Confirmada</span>
+                            break;
+                        case EstadoMatricula.Cancelada:
+                            <span class="badge bg-danger">Cancelada</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    @if (item.Estado == EstadoMatricula.Pendiente)
+                    {
+                        <form asp-action="ConfirmarMatricula" asp-route-id="@item.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('¿Confirmar esta matrícula?')">Confirmar</button>
+                        </form>
+                        <form asp-action="CancelarMatricula" asp-route-id="@item.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Cancelar esta matrícula?')">Cancelar</button>
+                        </form>
+                    }
+                    else if (item.Estado == EstadoMatricula.Confirmada)
+                    {
+                        <form asp-action="CancelarMatricula" asp-route-id="@item.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Cancelar esta matrícula?')">Cancelar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No hay matrículas para este curso.</div>
+}

@@ -1,0 +1,45 @@
+@model IEnumerable<portal_academico.Models.Curso>
+
+@{
+    ViewData["Title"] = "Gestión de Cursos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo Curso</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Codigo)</th>
+            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Creditos)</th>
+            <th>@Html.DisplayNameFor(model => model.CupoMaximo)</th>
+            <th>@Html.DisplayNameFor(model => model.HorarioInicio)</th>
+            <th>@Html.DisplayNameFor(model => model.HorarioFin)</th>
+            <th>@Html.DisplayNameFor(model => model.Activo)</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Codigo)</td>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Creditos)</td>
+                <td>@Html.DisplayFor(modelItem => item.CupoMaximo)</td>
+                <td>@item.HorarioInicio.ToString(@"hh\:mm")</td>
+                <td>@item.HorarioFin.ToString(@"hh\:mm")</td>
+                <td>@(item.Activo ? "Sí" : "No")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                    <a asp-action="Matriculas" asp-route-id="@item.Id" class="btn btn-sm btn-info">Matrículas</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
